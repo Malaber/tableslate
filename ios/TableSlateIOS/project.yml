@@ -1,0 +1,65 @@
+name: TableSlateApp
+options:
+  minimumXcodeGenVersion: 2.38.0
+packages:
+  TableSlateCore:
+    path: .
+targets:
+  TableSlate:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: App
+      - path: Assets.xcassets
+      - path: Definitions
+        buildPhase: resources
+    dependencies:
+      - package: TableSlateCore
+        product: TableSlateCore
+    settings:
+      base:
+        PRODUCT_NAME: TableSlate
+        PRODUCT_BUNDLE_IDENTIFIER: de.malaber.tableslate
+        DEVELOPMENT_TEAM: VWKG94374J
+        MARKETING_VERSION: 0.1.0
+        CURRENT_PROJECT_VERSION: 1
+        SWIFT_VERSION: 6.0
+        TARGETED_DEVICE_FAMILY: "1,2"
+        SUPPORTS_MACCATALYST: NO
+        GENERATE_INFOPLIST_FILE: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        INFOPLIST_KEY_CFBundleDisplayName: TableSlate
+        INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: NO
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIRequiresFullScreen: NO
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: UIInterfaceOrientationPortrait
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.games
+  TableSlateUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: UITests
+    dependencies:
+      - target: TableSlate
+    settings:
+      base:
+        PRODUCT_NAME: TableSlateUITests
+        PRODUCT_BUNDLE_IDENTIFIER: de.malaber.tableslate.ui-tests
+        DEVELOPMENT_TEAM: VWKG94374J
+        SWIFT_VERSION: 6.0
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: TableSlate
+schemes:
+  TableSlate:
+    build:
+      targets:
+        TableSlate: all
+    test:
+      gatherCoverageData: true
+      targets:
+        - name: TableSlateUITests

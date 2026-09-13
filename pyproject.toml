@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=80", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tableslate-dev"
+version = "0.1.0"
+description = "Local build and delivery tasks for TableSlate"
+requires-python = ">=3.11"
+dependencies = [
+  "invoke==2.2.0",
+]
+
+[tool.setuptools]
+packages = []

@@ -1,0 +1,11 @@
+# TableSlate
+
+TableSlate is a native, offline-first iPhone and iPad score-keeping companion for tabletop games.
+
+Key pages:
+- https://tableslate.malaber.de/ — product overview
+- https://tableslate.malaber.de/capabilities/ — scoring, persistence, definition engine, accessibility
+- https://tableslate.malaber.de/support/ — support and import troubleshooting
+- https://tableslate.malaber.de/privacy/ — privacy policy
+
+Privacy summary: no account, analytics, tracking, advertising, backend, or uploaded game history.

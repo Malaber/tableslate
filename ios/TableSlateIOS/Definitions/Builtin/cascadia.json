@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "id": "cascadia",
+  "definitionVersion": 1,
+  "name": "Cascadia",
+  "aliases": [],
+  "players": { "minimum": 1, "maximum": 4 },
+  "session": { "type": "finalScore" },
+  "layout": { "renderer": "scoreForm" },
+  "inputs": [
+    { "id": "bears", "label": "Bears", "group": "Wildlife", "minimum": 0, "allowsNegative": false, "quickValues": [] },
+    { "id": "elk", "label": "Elk", "group": "Wildlife", "minimum": 0, "allowsNegative": false, "quickValues": [] },
+    { "id": "salmon", "label": "Salmon", "group": "Wildlife", "minimum": 0, "allowsNegative": false, "quickValues": [] },
+    { "id": "hawks", "label": "Hawks", "group": "Wildlife", "minimum": 0, "allowsNegative": false, "quickValues": [] },
+    { "id": "foxes", "label": "Foxes", "group": "Wildlife", "minimum": 0, "allowsNegative": false, "quickValues": [] },
+    { "id": "forest", "label": "Forest", "group": "Habitats", "minimum": 0, "allowsNegative": false, "quickValues": [] },
+    { "id": "wetland", "label": "Wetland", "group": "Habitats", "minimum": 0, "allowsNegative": false, "quickValues": [] },
+    { "id": "prairie", "label": "Prairie", "group": "Habitats", "minimum": 0, "allowsNegative": false, "quickValues": [] },
+    { "id": "mountain", "label": "Mountain", "group": "Habitats", "minimum": 0, "allowsNegative": false, "quickValues": [] },
+    { "id": "river", "label": "River", "group": "Habitats", "minimum": 0, "allowsNegative": false, "quickValues": [] },
+    { "id": "nature-tokens", "label": "Nature Tokens", "group": "Bonus", "minimum": 0, "allowsNegative": false, "quickValues": [] }
+  ],
+  "scoreRules": {
+    "entryScore": {
+      "operation": "add",
+      "arguments": [
+        { "operation": "field", "field": "bears", "arguments": [] },
+        { "operation": "field", "field": "elk", "arguments": [] },
+        { "operation": "field", "field": "salmon", "arguments": [] },
+        { "operation": "field", "field": "hawks", "arguments": [] },
+        { "operation": "field", "field": "foxes", "arguments": [] },
+        { "operation": "field", "field": "forest", "arguments": [] },
+        { "operation": "field", "field": "wetland", "arguments": [] },
+        { "operation": "field", "field": "prairie", "arguments": [] },
+        { "operation": "field", "field": "mountain", "arguments": [] },
+        { "operation": "field", "field": "river", "arguments": [] },
+        { "operation": "field", "field": "nature-tokens", "arguments": [] }
+      ]
+    }
+  },
+  "validationRules": [],
+  "resultRules": { "highestWins": true },
+  "source": { "author": "TableSlate", "isBuiltIn": true }
+}

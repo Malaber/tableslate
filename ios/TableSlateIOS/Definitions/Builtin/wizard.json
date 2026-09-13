@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "id": "wizard",
+  "definitionVersion": 1,
+  "name": "Wizard",
+  "aliases": ["Wizards"],
+  "players": { "minimum": 3, "maximum": 6 },
+  "session": { "type": "roundBased" },
+  "layout": { "renderer": "roundTable" },
+  "inputs": [
+    { "id": "bid", "label": "Bid", "allowsNegative": false, "quickValues": [0, 1, 2, 3, 4, 5, 6] },
+    { "id": "tricks", "label": "Tricks", "allowsNegative": false, "quickValues": [0, 1, 2, 3, 4, 5, 6] }
+  ],
+  "progression": {
+    "maximumRounds": {
+      "operation": "divide",
+      "arguments": [
+        { "operation": "constant", "value": 60, "arguments": [] },
+        { "operation": "playerCount", "arguments": [] }
+      ]
+    }
+  },
+  "scoreRules": {
+    "entryScore": {
+      "operation": "if",
+      "arguments": [
+        {
+          "operation": "equals",
+          "arguments": [
+            { "operation": "field", "field": "bid", "arguments": [] },
+            { "operation": "field", "field": "tricks", "arguments": [] }
+          ]
+        },
+        {
+          "operation": "add",
+          "arguments": [
+            { "operation": "constant", "value": 20, "arguments": [] },
+            {
+              "operation": "multiply",
+              "arguments": [
+                { "operation": "field", "field": "tricks", "arguments": [] },
+                { "operation": "constant", "value": 10, "arguments": [] }
+              ]
+            }
+          ]
+        },
+        {
+          "operation": "multiply",
+          "arguments": [
+            { "operation": "constant", "value": -10, "arguments": [] },
+            {
+              "operation": "abs",
+              "arguments": [
+                {
+                  "operation": "subtract",
+                  "arguments": [
+                    { "operation": "field", "field": "bid", "arguments": [] },
+                    { "operation": "field", "field": "tricks", "arguments": [] }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "validationRules": [
+    {
+      "id": "trick-total",
+      "message": "The total tricks must match this round.",
+      "severity": "invalid",
+      "expression": {
+        "operation": "equals",
+        "arguments": [
+          { "operation": "sum", "field": "tricks", "arguments": [] },
+          { "operation": "roundNumber", "arguments": [] }
+        ]
+      }
+    }
+  ],
+  "resultRules": { "highestWins": true },
+  "source": { "author": "TableSlate", "isBuiltIn": true }
+}

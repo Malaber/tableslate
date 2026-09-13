@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "generic-score",
+  "definitionVersion": 1,
+  "name": "Generic Score",
+  "aliases": ["Score Sheet", "Other Game"],
+  "players": { "minimum": 1, "maximum": 12 },
+  "session": { "type": "generic" },
+  "layout": { "renderer": "scoreCounter" },
+  "inputs": [
+    { "id": "score", "label": "Score", "allowsNegative": true, "quickValues": [-10, -5, -1, 1, 5, 10] }
+  ],
+  "scoreRules": {
+    "entryScore": { "operation": "field", "field": "score", "arguments": [] }
+  },
+  "validationRules": [],
+  "resultRules": { "highestWins": true },
+  "source": { "author": "TableSlate", "isBuiltIn": true }
+}

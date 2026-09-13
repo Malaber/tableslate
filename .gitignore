@@ -1,0 +1,11 @@
+.DS_Store
+.venv/
+__pycache__/
+*.pyc
+e2e-artifacts/
+ios/TableSlateIOS/.build/
+ios/TableSlateIOS/.clang-module-cache/
+ios/TableSlateIOS/.derived-data/
+ios/TableSlateIOS/.derived-e2e-*/
+ios/TableSlateIOS/coverage/
+ios/TableSlateIOS/TableSlateApp.xcodeproj/

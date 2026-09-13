@@ -1,0 +1,25 @@
+name: TestFlight
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  provisioning-required:
+    if: vars.TESTFLIGHT_UPLOAD_ENABLED != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - run: >-
+          echo "TestFlight delivery is intentionally disabled until the App ID,
+          App Store Connect record, provisioning profile, protected environment,
+          and physical-device smoke tests are complete."
+
+  ready-for-delivery-implementation:
+    if: vars.TESTFLIGHT_UPLOAD_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "TESTFLIGHT_UPLOAD_ENABLED is set, but signed upload must be configured per docs/app-store-connect-setup.md." >&2
+          exit 1
