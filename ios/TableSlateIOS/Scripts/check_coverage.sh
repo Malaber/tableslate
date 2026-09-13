@@ -36,7 +36,7 @@ fi
   -summary-only \
   > "$coverage_dir/summary.json"
 
-python3 "$package_dir/Scripts/coverage_gate.py" \
+swift "$package_dir/Scripts/coverage_gate.swift" \
   "$coverage_dir/summary.json" \
   "$minimum_coverage" \
   | tee "$coverage_dir/summary.txt"
