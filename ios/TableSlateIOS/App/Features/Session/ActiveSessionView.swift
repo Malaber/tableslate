@@ -382,13 +382,24 @@ private struct ScoreCounterView: View {
                 VStack(spacing: 4) {
                     Text(directMode ? "CURRENT TOTALS" : "ROUND \(session.currentRound)")
                         .font(.caption.weight(.black)).tracking(1.4).foregroundStyle(SlateTheme.deepMint)
+                    Text(scoreInput.label)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
                     Text(highestWins ? "Highest score wins" : "Lowest score wins")
                         .font(.title2.bold())
                 }
                 ForEach(session.players) { player in
                     SlateCard {
                         HStack(spacing: 14) {
-                            PlayerChip(name: player.name, selected: true)
+                            VStack(alignment: .leading, spacing: 3) {
+                                PlayerChip(name: player.name, selected: true)
+                                if !directMode {
+                                    Text("Total \(cumulativeScore(for: player))")
+                                        .font(.caption.weight(.semibold).monospacedDigit())
+                                        .foregroundStyle(.secondary)
+                                }
+                            }
                             Spacer()
                             Button { change(player, by: -1) } label: {
                                 Image(systemName: "minus").frame(width: 44, height: 44)
@@ -419,17 +430,17 @@ private struct ScoreCounterView: View {
                     SectionHeader(title: "Standings")
                     ForEach(store.results(for: session)) { RankingRow(result: $0) }
                 }
-                PrimaryButton(title: directMode ? "Finish Game" : "Next Round", icon: directMode ? "checkered.flag" : "arrow.right") {
-                    directMode ? onComplete() : store.advanceRound(sessionID: session.id)
+                PrimaryButton(title: shouldFinish ? "Finish Game" : "Next Round", icon: shouldFinish ? "checkered.flag" : "arrow.right") {
+                    shouldFinish ? onComplete() : store.advanceRound(sessionID: session.id)
                 }
-                .accessibilityIdentifier(directMode ? "finish-game-button" : "next-round-button")
+                .accessibilityIdentifier(shouldFinish ? "finish-game-button" : "next-round-button")
             }
             .padding()
         }
         .slateBackground()
         .sheet(item: $editingPlayer) { player in
             NumericEntrySheet(
-                title: player.name,
+                title: "\(player.name) · \(scoreInput.label)",
                 value: store.value(sessionID: session.id, playerID: player.id, field: scoreField, round: entryRound),
                 allowsNegative: allowsNegative
             ) { value in
@@ -447,15 +458,18 @@ private struct ScoreCounterView: View {
         session.configuration["highestWins"].map { $0 != 0 }
             ?? session.definitionSnapshot.resultRules.highestWins
     }
+    private var shouldFinish: Bool { directMode || store.shouldEndGame(session) }
     private var entryRound: Int? { directMode ? nil : session.currentRound }
-    private var scoreField: String { session.definitionSnapshot.inputs.first?.id ?? "score" }
-    private var allowsNegative: Bool { session.definitionSnapshot.inputs.first?.allowsNegative ?? true }
+    private var scoreInput: InputDefinition { session.definitionSnapshot.inputs[0] }
+    private var scoreField: String { scoreInput.id }
+    private var allowsNegative: Bool { scoreInput.allowsNegative }
 
     private func displayedScore(for player: SessionPlayer) -> Int {
-        if directMode {
-            return store.value(sessionID: session.id, playerID: player.id, field: scoreField, round: nil)
-        }
-        return store.results(for: session).first { $0.playerID == player.id }?.score ?? 0
+        store.value(sessionID: session.id, playerID: player.id, field: scoreField, round: entryRound)
+    }
+
+    private func cumulativeScore(for player: SessionPlayer) -> Int {
+        store.results(for: session).first { $0.playerID == player.id }?.score ?? 0
     }
 
     private func change(_ player: SessionPlayer, by delta: Int) {

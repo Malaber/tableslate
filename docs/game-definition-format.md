@@ -39,6 +39,8 @@ Identifiers use lowercase ASCII letters, numbers, and single hyphens. Supported 
 
 Inputs may include `group`, `minimum`, `maximum`, `allowsNegative`, and `quickValues`. A definition can contain at most 64 inputs.
 
+Round progression may define `maximumRounds` and `endWhenAnyScoreReaches` expressions. The latter ends a round-based game when any cumulative player score meets or exceeds the evaluated positive threshold; SKYJO uses `100`.
+
 ## Safe expressions
 
 Every expression is a JSON tree with an `operation`, zero or more `arguments`, and operation-specific `value` or `field` data. Schema v1 supports:

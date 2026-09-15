@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "romme",
+  "definitionVersion": 1,
+  "name": "Rommé",
+  "aliases": ["Romme", "Rummy"],
+  "players": { "minimum": 2, "maximum": 6 },
+  "session": { "type": "roundBased" },
+  "layout": { "renderer": "scoreCounter" },
+  "inputs": [
+    {
+      "id": "penalty-points",
+      "label": "Hand-card penalty points · round winner enters 0",
+      "minimum": 0,
+      "allowsNegative": false,
+      "quickValues": [0, 5, 10, 20]
+    }
+  ],
+  "scoreRules": {
+    "entryScore": { "operation": "field", "field": "penalty-points", "arguments": [] }
+  },
+  "validationRules": [],
+  "resultRules": { "highestWins": false },
+  "source": { "author": "TableSlate", "isBuiltIn": true }
+}

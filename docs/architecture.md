@@ -39,6 +39,6 @@ Writes use atomic replacement after every meaningful score mutation. If decoding
 
 - `roundTable`: current-round input plus cumulative standings; Wizard uses quick-value chips.
 - `scoreForm`: grouped final-score fields and per-player navigation; Cascadia uses this family.
-- `scoreCounter`: direct totals or additive rounds with highest/lowest-wins configuration.
+- `scoreCounter`: direct totals or additive rounds with highest/lowest-wins configuration; SKYJO and Rommé use additive rounds.
 
 The families interpret semantic hints but definitions never describe arbitrary SwiftUI trees.

@@ -6,6 +6,8 @@ TableSlate is a native, offline-first iPhone and iPad tabletop scoring companion
 
 - Wizard round scoring, trick-total validation, editable rounds, standings, ties, and recovery
 - Cascadia final score form with grouped categories and automatic totals
+- SKYJO round totals with its 100-point finish threshold and lowest-score ranking
+- Rommé round penalty totals with lowest-score ranking
 - Generic score sheets with per-round or direct-total scoring and highest/lowest-wins modes
 - reusable players, favorites, recents, multiple active games, undo, auto-save, history, and derived results
 - safe local `.tableslate-game.json` import with schema, size, identifier, complexity, and version checks

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "skyjo",
+  "definitionVersion": 1,
+  "name": "SKYJO",
+  "aliases": ["Skyjo"],
+  "players": { "minimum": 2, "maximum": 8 },
+  "session": { "type": "roundBased" },
+  "layout": { "renderer": "scoreCounter" },
+  "inputs": [
+    {
+      "id": "round-points",
+      "label": "Round points · double a positive ender score unless sole lowest",
+      "minimum": -24,
+      "maximum": 288,
+      "allowsNegative": true,
+      "quickValues": [-10, -5, -1, 0, 1, 5, 10]
+    }
+  ],
+  "progression": {
+    "endWhenAnyScoreReaches": {
+      "operation": "constant",
+      "value": 100,
+      "arguments": []
+    }
+  },
+  "scoreRules": {
+    "entryScore": { "operation": "field", "field": "round-points", "arguments": [] }
+  },
+  "validationRules": [],
+  "resultRules": { "highestWins": false },
+  "source": { "author": "TableSlate", "isBuiltIn": true }
+}

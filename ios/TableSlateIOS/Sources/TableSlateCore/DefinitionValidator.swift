@@ -96,7 +96,10 @@ public struct DefinitionValidator: Sendable {
         }
         let expressions = [definition.scoreRules.entryScore]
             + definition.validationRules.map(\.expression)
-            + [definition.progression?.maximumRounds].compactMap { $0 }
+            + [
+                definition.progression?.maximumRounds,
+                definition.progression?.endWhenAnyScoreReaches,
+            ].compactMap { $0 }
         for expression in expressions {
             let metrics = expressionMetrics(expression)
             guard metrics.nodes <= maximumExpressionNodes, metrics.depth <= maximumExpressionDepth else {

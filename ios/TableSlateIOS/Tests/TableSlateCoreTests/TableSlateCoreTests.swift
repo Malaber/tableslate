@@ -6,7 +6,7 @@ final class TableSlateCoreTests: XCTestCase {
     private let validator = DefinitionValidator()
 
     func testBuiltInDefinitionsDecodeAndValidate() throws {
-        let names = ["wizard", "cascadia", "generic-score"]
+        let names = ["wizard", "cascadia", "generic-score", "skyjo", "romme"]
         for name in names {
             let definition = try loadDefinition(name)
             try validator.validate(definition)
@@ -75,6 +75,44 @@ final class TableSlateCoreTests: XCTestCase {
         session.configuration["highestWins"] = 0
         results = ScoringEngine().results(for: session)
         XCTAssertEqual(results.first?.score, 4)
+    }
+
+    func testSkyjoTotalsLowestWinsAndEndsAtOneHundred() throws {
+        let definition = try loadDefinition("skyjo")
+        let players = [Player(name: "A"), Player(name: "B")]
+        var session = GameSession(definition: definition, players: players)
+        session.scoreEntries = [
+            ScoreEntry(playerID: players[0].id, roundNumber: 1, values: ["round-points": 72]),
+            ScoreEntry(playerID: players[1].id, roundNumber: 1, values: ["round-points": 20]),
+        ]
+        let engine = ScoringEngine()
+
+        XCTAssertEqual(engine.endScoreThreshold(for: session), 100)
+        XCTAssertFalse(engine.shouldEndGame(session))
+
+        session.scoreEntries += [
+            ScoreEntry(playerID: players[0].id, roundNumber: 2, values: ["round-points": 31]),
+            ScoreEntry(playerID: players[1].id, roundNumber: 2, values: ["round-points": -2]),
+        ]
+        XCTAssertTrue(engine.shouldEndGame(session))
+        XCTAssertEqual(engine.results(for: session).map(\.score), [18, 103])
+        XCTAssertEqual(engine.results(for: session).first?.playerName, "B")
+    }
+
+    func testRommeAddsPenaltyPointsAndLowestWins() throws {
+        let definition = try loadDefinition("romme")
+        let players = [Player(name: "A"), Player(name: "B")]
+        var session = GameSession(definition: definition, players: players)
+        session.scoreEntries = [
+            ScoreEntry(playerID: players[0].id, roundNumber: 1, values: ["penalty-points": 0]),
+            ScoreEntry(playerID: players[1].id, roundNumber: 1, values: ["penalty-points": 47]),
+            ScoreEntry(playerID: players[0].id, roundNumber: 2, values: ["penalty-points": 32]),
+            ScoreEntry(playerID: players[1].id, roundNumber: 2, values: ["penalty-points": 0]),
+        ]
+
+        let results = ScoringEngine().results(for: session)
+        XCTAssertEqual(results.map(\.score), [32, 47])
+        XCTAssertEqual(results.first?.playerName, "A")
     }
 
     func testExpressionOperationsAndFailures() throws {
@@ -263,7 +301,10 @@ final class TableSlateCoreTests: XCTestCase {
         let input = InputDefinition(id: "points", label: "Points", group: "Round", minimum: -5, maximum: 20, allowsNegative: true, quickValues: [-1, 1])
         let scoreRules = ScoreRules(entryScore: Expression(.field, field: "points"))
         let validation = ValidationRule(id: "positive", message: "Check score", severity: .suspicious, expression: Expression(.greaterThan, arguments: []))
-        let progression = ProgressionDefinition(maximumRounds: Expression(.constant, value: 10))
+        let progression = ProgressionDefinition(
+            maximumRounds: Expression(.constant, value: 10),
+            endWhenAnyScoreReaches: Expression(.constant, value: 100)
+        )
         let results = ResultRules(highestWins: false)
         let source = DefinitionSource(author: "Community", isBuiltIn: false)
         let definition = GameDefinition(
@@ -340,6 +381,13 @@ final class TableSlateCoreTests: XCTestCase {
         XCTAssertEqual(engine.entry(in: session, playerID: player.id, roundNumber: 1), entry)
         XCTAssertNil(engine.entry(in: session, playerID: UUID(), roundNumber: 1))
         XCTAssertNil(engine.maximumRounds(for: session))
+        XCTAssertNil(engine.endScoreThreshold(for: session))
+        XCTAssertFalse(engine.shouldEndGame(session))
+
+        session.definitionSnapshot.progression = ProgressionDefinition(
+            endWhenAnyScoreReaches: Expression(.constant, value: 0)
+        )
+        XCTAssertNil(engine.endScoreThreshold(for: session))
     }
 
     func testScoringTotalTreatsInvalidEntriesAsZeroAndSaturatesOverflow() throws {

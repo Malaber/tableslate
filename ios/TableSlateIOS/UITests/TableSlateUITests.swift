@@ -111,6 +111,36 @@ final class TableSlateUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Final ranking"].exists)
     }
 
+    func testSkyjoAndRommeAreAvailableAndRoundScoresStaySeparate() throws {
+        let app = launchApp()
+        app.buttons["start-game-button"].tap()
+
+        XCTAssertTrue(app.buttons["choose-game-romme"].waitForExistence(timeout: 3))
+        let skyjo = app.buttons["choose-game-skyjo"]
+        XCTAssertTrue(skyjo.waitForExistence(timeout: 3))
+        skyjo.tap()
+
+        for name in ["Daniel", "Luisa"] {
+            let field = app.textFields["new-player-field"]
+            XCTAssertTrue(field.waitForExistence(timeout: 2))
+            field.tap()
+            field.typeText(name)
+            app.buttons["Add"].tap()
+        }
+        tapWhenHittable(app.buttons["start-scoring-button"], in: app)
+
+        XCTAssertTrue(app.navigationBars["SKYJO"].waitForExistence(timeout: 4))
+        XCTAssertTrue(app.staticTexts["Round points · double a positive ender score unless sole lowest"].exists)
+        tapWhenHittable(app.buttons["increment-Daniel"], in: app)
+        XCTAssertEqual(app.buttons["score-Daniel"].label, "Daniel score, 1")
+        XCTAssertTrue(app.staticTexts["Total 1"].exists)
+
+        tapWhenHittable(app.buttons["next-round-button"], in: app)
+        XCTAssertTrue(app.staticTexts["ROUND 2"].waitForExistence(timeout: 3))
+        XCTAssertEqual(app.buttons["score-Daniel"].label, "Daniel score, 0")
+        XCTAssertTrue(app.staticTexts["Total 1"].exists)
+    }
+
     private func launchApp() -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments = ["--ui-testing-reset"]

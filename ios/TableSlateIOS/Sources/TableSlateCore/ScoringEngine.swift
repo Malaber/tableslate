@@ -63,6 +63,18 @@ public struct ScoringEngine: Sendable {
         return try? evaluator.evaluate(expression, context: context)
     }
 
+    public func endScoreThreshold(for session: GameSession) -> Int? {
+        guard let expression = session.definitionSnapshot.progression?.endWhenAnyScoreReaches else { return nil }
+        let context = EvaluationContext(values: [:], roundNumber: session.currentRound, playerCount: session.players.count)
+        guard let threshold = try? evaluator.evaluate(expression, context: context), threshold > 0 else { return nil }
+        return threshold
+    }
+
+    public func shouldEndGame(_ session: GameSession) -> Bool {
+        guard let threshold = endScoreThreshold(for: session) else { return false }
+        return session.players.contains { total(for: $0.id, in: session) >= threshold }
+    }
+
     public func validation(forRound round: Int, in session: GameSession) -> [ValidationState] {
         let entries = session.scoreEntries.filter { $0.roundNumber == round }
         let context = EvaluationContext(

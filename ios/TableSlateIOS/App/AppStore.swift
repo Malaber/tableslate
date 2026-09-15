@@ -166,7 +166,8 @@ final class AppStore: ObservableObject {
         guard let index = data.activeSessions.firstIndex(where: { $0.id == sessionID }) else { return }
         let session = data.activeSessions[index]
         rememberUndo(for: session)
-        if let maximum = scoringEngine.maximumRounds(for: session), session.currentRound >= maximum {
+        if scoringEngine.shouldEndGame(session)
+            || scoringEngine.maximumRounds(for: session).map({ session.currentRound >= $0 }) == true {
             completeSession(id: sessionID)
             return
         }
@@ -274,6 +275,10 @@ final class AppStore: ObservableObject {
 
     func maximumRounds(for session: GameSession) -> Int? {
         scoringEngine.maximumRounds(for: session)
+    }
+
+    func shouldEndGame(_ session: GameSession) -> Bool {
+        scoringEngine.shouldEndGame(session)
     }
 
     private func rememberUndo(for session: GameSession) {

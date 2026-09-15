@@ -126,8 +126,15 @@ public struct ValidationRule: Codable, Equatable, Identifiable, Sendable {
 
 public struct ProgressionDefinition: Codable, Equatable, Sendable {
     public var maximumRounds: Expression?
+    public var endWhenAnyScoreReaches: Expression?
 
-    public init(maximumRounds: Expression? = nil) { self.maximumRounds = maximumRounds }
+    public init(
+        maximumRounds: Expression? = nil,
+        endWhenAnyScoreReaches: Expression? = nil
+    ) {
+        self.maximumRounds = maximumRounds
+        self.endWhenAnyScoreReaches = endWhenAnyScoreReaches
+    }
 }
 
 public struct ResultRules: Codable, Equatable, Sendable {
