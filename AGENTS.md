@@ -9,3 +9,4 @@
 - A completed session keeps its exact definition snapshot so history remains reproducible.
 - Every meaningful score mutation must auto-save and remain undoable where practical.
 - Keep `project.yml` authoritative; do not rely on hand-edited generated Xcode project state.
+- Build, archive, and upload TestFlight releases with the Xcode command-line tools in the background. Do not open the Xcode GUI unless the user explicitly requests it.

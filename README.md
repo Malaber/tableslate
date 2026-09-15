@@ -29,4 +29,4 @@ python3 -m venv .venv
 
 The generated `TableSlateApp.xcodeproj` is ignored. [`ios/TableSlateIOS/project.yml`](ios/TableSlateIOS/project.yml) is authoritative.
 
-Architecture and definition authoring are documented in [`docs/architecture.md`](docs/architecture.md) and [`docs/game-definition-format.md`](docs/game-definition-format.md).
+Architecture and definition authoring are documented in [`docs/architecture.md`](docs/architecture.md) and [`docs/game-definition-format.md`](docs/game-definition-format.md). The background-only archive and TestFlight upload process is in [`docs/testflight-release.md`](docs/testflight-release.md).

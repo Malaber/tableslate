@@ -16,12 +16,13 @@ The Xcode project is reproducibly generated from `ios/TableSlateIOS/project.yml`
 
 ## Continuous integration
 
-`ci.yml` calls `ios-checks.yml` for portable Swift tests and macOS iPhone/iPad UI checks. `pages.yml` publishes `website/` without a build step. TestFlight stays gated behind repository configuration until App Store Connect provisioning is complete.
+`ci.yml` calls `ios-checks.yml` for portable Swift tests and macOS iPhone/iPad UI checks. `pages.yml` publishes `website/` without a build step. TestFlight stays gated behind repository configuration until the uploaded build has been tested and protected CI signing is configured.
 
 ## Release stages
 
 1. Make package, iPhone, and iPad checks green.
 2. Smoke-test score entry, termination recovery, appearance modes, import, and Dynamic Type on physical devices.
-3. Register `de.malaber.tableslate`, the App Store Connect record, and a TableSlate-specific distribution profile.
-4. Configure the protected `testflight` environment and set `TESTFLIGHT_UPLOAD_ENABLED` only after a successful manual upload.
-5. Enable automatic current-main delivery; never upload a superseded commit.
+3. Archive and upload from the command line using [`testflight-release.md`](testflight-release.md). Do not open the Xcode GUI.
+4. Test the processed build through an internal TestFlight group on physical iPhone and iPad.
+5. Configure the protected `testflight` environment and set `TESTFLIGHT_UPLOAD_ENABLED` only after that testing succeeds.
+6. Enable automatic current-main delivery; never upload a superseded commit.
